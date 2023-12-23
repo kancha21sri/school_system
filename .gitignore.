@@ -1,4 +1,4 @@
-/.idea
-/database_file
-/application/config/config.php
-/application/config/database.php
+.idea
+database_file
+application/config/config.php
+application/config/database.php
