@@ -553,8 +553,8 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>optimum/date/daterangepicker.css" />
 	<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
     <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
-	
-			
+    <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/jquery/validate/jquery.validate.min.js"></script>
+
 <script src="<?php echo base_url(); ?>js/meteorEmoji.min.js"></script>
   <script>
     (() => {

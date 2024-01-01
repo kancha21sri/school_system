@@ -140,9 +140,6 @@
                         echo 'opened active';
                     ?> ">
 
-
-
-
                         <li class="<?php if ($page_name == 'teacher')
                             echo 'active'; ?> ">
                             <a href="<?php echo base_url(); ?>admin/teacher">
@@ -152,9 +149,6 @@
                                 </span>
                             </a>
                         </li>
-
-
-
 
                         <li class="<?php if ($page_name == 'librarian')
                             echo 'active'; ?> ">
@@ -166,10 +160,6 @@
                             </a>
                         </li>
 
-
-
-
-
                         <li class="<?php if ($page_name == 'accountant')
                             echo 'active'; ?> ">
                             <a href="<?php echo base_url(); ?>admin/accountant">
@@ -179,8 +169,6 @@
                                 </span>
                             </a>
                         </li>
-
-
 
                         <li class="<?php if ($page_name == 'hostel')
                             echo 'active'; ?> ">
@@ -192,8 +180,6 @@
                             </a>
                         </li>
 
-
-
                         <li class="<?php if ($page_name == 'hrm')
                             echo 'active'; ?> ">
                             <a href="<?php echo base_url(); ?>admin/hrm">
@@ -203,16 +189,9 @@
                                 </span>
                             </a>
                         </li>
-
-
                     </ul>
                 </li>
             <?php endif; ?> <!---  Permission for Admin Manage Employee ends here ------>
-
-
-
-
-
 
             <!---  Permission for Admin Manage Student starts here ------>
             <?php $check_admin_permission = $this->db->get_where('admin_role', array('admin_id' => $this->session->userdata('login_user_id')))->row()->manage_student; ?>
@@ -275,9 +254,24 @@
 
                     </ul>
                 </li>
-            <?php endif; ?> <!---  Permission for Admin Manage Student ends here ------>
+            <?php endif; ?>
+            <!---  Permission for Admin Manage Student ends here ------>
 
-            <li> <a href="#" class="waves-effect"><i data-icon="&#xe006;" class="fa fa-bar-chart-o p-r-10"></i> <span
+            <!---  Permission for Admin Manage Parents starts here ------>
+            <?php $check_admin_permission = $this->db->get_where('admin_role', array('admin_id' => $this->session->userdata('login_user_id')))->row()->manage_student; ?>
+            <?php if ($check_admin_permission == '1'): ?>
+
+                <li class="student">
+                    <a href="<?php echo base_url(); ?>admin/parent" class="waves-effect">
+                        <i data-icon="&#xe006;" class="fa fa-users p-r-10"></i>
+                        <span class="hide-menu">
+                            <?php echo get_phrase('manage_parents'); ?><span class="fa arrow"></span>
+                        </span>
+                    </a>
+                </li>
+            <?php endif; ?> <!---  Permission for Admin Manage Parents ends here ------>
+
+            <li><a href="#" class="waves-effect"><i data-icon="&#xe006;" class="fa fa-bar-chart-o p-r-10"></i> <span
                         class="hide-menu">
                         <?php echo get_phrase('generate_reports'); ?><span class="fa arrow"></span>
                     </span></a>
@@ -298,7 +292,6 @@
                 </li>
             <?php endif; ?>
 
-
             <li class="">
                 <a href="<?php echo base_url(); ?>login/logout">
                     <i class="fa fa-sign-out p-r-10"></i>
@@ -307,7 +300,6 @@
                     </span>
                 </a>
             </li>
-
 
         </ul>
     </div>

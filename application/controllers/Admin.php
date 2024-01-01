@@ -12,6 +12,7 @@ class Admin extends CI_Controller {
                 $this->load->model('exam_question_model');              // Load Apllication Model Here
                 $this->load->model('language_model');                   // Load Apllication Model Here
                 $this->load->model('admin_model');                      // Load Apllication Model Here
+                $this->load->model('parent_model');
     }
 
     /**default functin, redirects to login page if no admin logged in yet***/
@@ -331,6 +332,81 @@ class Admin extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
+    /**
+     * Manage parents data
+     *
+     * @param string $param1
+     * @param string $param2
+     * @param string $param3
+     * @return bool|void
+     */
+    function parent($param1 = '', $param2 = '', $param3 = '')
+    {
+        if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');
+        if ($param1 == 'create') {
+
+            $this->load->helper(array('form'));
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('name', 'Parent Name', 'trim|required|regex_match[/^([a-z ])+$/i]');
+            $this->form_validation->set_rules('email', 'Parent Email', 'trim|required|valid_email|is_unique[parent.email]');
+            $this->form_validation->set_rules('phone', 'Parent Phone No', 'trim|required|regex_match[/^[0-9]{10}$/]');
+            $this->form_validation->set_rules('profession', 'Parent Profession', 'trim|required');
+            $this->form_validation->set_rules('address', 'Parent Address', 'trim|required');
+            $this->form_validation->set_rules('password', 'Parent Password', 'trim|required|min_length[4]');
+
+            $data = [
+                'name' => $this->input->post('name'),
+                'email' => $this->input->post('email'),
+                'phone'  => $this->input->post('phone'),
+                'profession' => $this->input->post('profession'),
+                'address' => $this->input->post('address'),
+                'password' => $this->input->post('password')
+            ];
+
+            $this->form_validation->set_data($data);
+            if ($this->form_validation->run())
+            {
+                $data['password'] =  password_hash($this->input->post('password'),PASSWORD_BCRYPT);
+                try {
+                    if($this->parent_model->insertParentDetails($data))
+                    {
+                        $this->session->set_flashdata('flash_message' , get_phrase('parent_data_added_successfully'));
+                        redirect(base_url() . 'admin/parent/', 'refresh');
+                    }
+                } catch (Exception $e) {
+                    log_message('error: ',$e->getMessage());
+                    return false;
+                }
+
+            } else{
+                $this->session->set_flashdata('error_message', get_phrase('Form Validation Errors'));
+
+            }
+        }
+        if ($param1 == 'edit') {
+            $data['name']                   = $this->input->post('name');
+            $data['email']                  = $this->input->post('email');
+            $data['phone']                  = $this->input->post('phone');
+            $data['address']                = $this->input->post('address');
+            $data['profession']             = $this->input->post('profession');
+            $this->db->where('parent_id' , $param2);
+            $this->db->update('parent' , $data);
+            $this->session->set_flashdata('flash_message' , get_phrase('data_updated'));
+            redirect(base_url() . 'admin/parent/', 'refresh');
+        }
+        if ($param1 == 'delete') {
+            $this->db->where('parent_id' , $param2);
+            $this->db->delete('parent');
+            $this->session->set_flashdata('flash_message' , get_phrase('data_deleted'));
+            redirect(base_url() . 'admin/parent/', 'refresh');
+        }
+        $page_data['page_title'] 	= get_phrase('Manage Parents');
+        $page_data['page_name']  = 'parent';
+        $page_data['select_parent']  = $this->db->get('parent')->result_array();
+        $this->load->view('backend/index', $page_data);
+    }
 
     function teacher ($param1 = null, $param2 = null, $param3 = null){
 
